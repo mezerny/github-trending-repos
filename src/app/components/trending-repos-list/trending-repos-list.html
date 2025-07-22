@@ -1,0 +1,38 @@
+<div class="repository-list">
+  <h2>Popular GitHub Repositories</h2>
+
+  @if (initialLoading()) {
+    <div class="loading">Loading repositories...</div>
+  }
+
+  @if (error()) {
+    <div class="error">
+      {{ error() }}
+      <button (click)="retry()" class="retry-btn">Retry</button>
+    </div>
+  }
+
+  @if (reposList().length > 0) {
+    <div class="repositories-info">
+      <span class="total-count">{{ totalCount() }} repositories found</span>
+    </div>
+
+    <div class="repositories" #repositoriesContainer>
+      @for (repo of reposList(); track repo.id) {
+        <app-trending-repo [repository]="repo" />
+      }
+    </div>
+
+    @if (loadingMore()) {
+      <div class="loading-more">Loading more repositories...</div>
+    }
+
+    @if (hasReachedEnd()) {
+      <div class="end-message">
+        🎉 You've reached the end! No more repositories to load.
+      </div>
+    }
+  }
+  <!-- Intersection Observer target -->
+  <div #scrollTrigger class="scroll-trigger"></div>
+</div>

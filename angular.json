@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "github-starred-repos": {
+    "github-trending-repos": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -30,6 +30,7 @@
               }
             ],
             "styles": [
+              "src/custom-theme.scss",
               "src/styles.less"
             ]
           },
@@ -61,10 +62,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "github-starred-repos:build:production"
+              "buildTarget": "github-trending-repos:build:production"
             },
             "development": {
-              "buildTarget": "github-starred-repos:build:development"
+              "buildTarget": "github-trending-repos:build:development"
             }
           },
           "defaultConfiguration": "development"
