@@ -1,0 +1,175 @@
+@color-white: #ffffff;
+@color-black-rgba: rgba(0, 0, 0, 0.2);
+
+@color-border: #e9ecef;
+@color-header-border: #eee;
+@color-bg-light: #f8f9fa;
+@color-bg-muted: #fdfdfd;
+
+@color-text-dark: #333;
+@color-text-medium: #666;
+@color-text-light: #586069;
+
+@color-blue: #0366d6;
+@color-blue-hover: #0256cc;
+
+.modal-content {
+  background: @color-white;
+  border-radius: 8px;
+  max-width: 600px;
+  width: 90vw;
+  max-height: 90vh;
+  overflow: hidden;
+  box-shadow: 0 10px 25px @color-black-rgba;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid @color-header-border;
+  background: @color-bg-light;
+
+  h2 {
+    margin: 0;
+    color: @color-text-dark;
+    font-size: 1.5rem;
+  }
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: @color-text-medium;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: @color-border;
+  }
+}
+
+.modal-body {
+  padding: 20px;
+  overflow-y: auto;
+  max-height: calc(90vh - 80px);
+}
+
+.owner-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+
+  .owner-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 2px solid @color-border;
+  }
+
+  .owner-details {
+    h3 {
+      margin: 0;
+      color: @color-blue;
+
+      a {
+        text-decoration: none;
+        color: inherit;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+
+    .full-name {
+      margin: 5px 0 0 0;
+      color: @color-text-medium;
+      font-size: 0.9rem;
+    }
+  }
+}
+
+.description {
+  color: @color-text-light;
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.repo-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 15px;
+  margin-bottom: 30px;
+  padding: 15px;
+  background: @color-bg-light;
+  border-radius: 6px;
+
+  .stat-item {
+    text-align: center;
+
+    .stat-label {
+      display: block;
+      font-size: 0.85rem;
+      color: @color-text-medium;
+      margin-bottom: 5px;
+    }
+
+    .stat-value {
+      display: block;
+      font-weight: bold;
+      font-size: 1.1rem;
+      color: @color-text-dark;
+    }
+  }
+}
+
+.rating-section {
+  margin-bottom: 30px;
+  padding: 20px;
+  border: 1px solid @color-border;
+  border-radius: 6px;
+  background: @color-bg-muted;
+
+  h3 {
+    margin: 0 0 15px 0;
+    color: @color-text-dark;
+    font-size: 1.1rem;
+  }
+
+  .rating-text {
+    margin: 10px 0 0 0;
+    color: @color-text-medium;
+    font-size: 0.9rem;
+  }
+}
+
+.actions {
+  text-align: center;
+
+  .view-repo-btn {
+    display: inline-block;
+    background: @color-blue;
+    color: @color-white;
+    padding: 12px 24px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background: @color-blue-hover;
+    }
+  }
+}

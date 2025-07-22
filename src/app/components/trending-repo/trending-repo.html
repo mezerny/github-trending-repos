@@ -1,40 +1,53 @@
-<div class="repository-card">
+<div (click)="openModal()" class="repository-card">
   <div class="card-content">
     <div class="avatar-section">
       <img
-        [src]="repository().owner.avatar_url"
         [alt]="repository().owner.login + ' avatar'"
-        class="owner-avatar">
+        [src]="repository().owner.avatar_url"
+        class="owner-avatar"
+      />
     </div>
 
     <div class="repo-details">
       <h3 class="repo-title">
-        <a [href]="repository().html_url" target="_blank" rel="noopener">
+        <a [href]="repository().html_url" target="_blank">
           {{ repository().name }}
         </a>
       </h3>
 
       <p class="repo-description">
-        {{ repository().description || 'No description available' }}
+        {{ repository().description || "No description available" }}
       </p>
 
       <div class="repo-meta">
-            <span class="meta-item stars">
-              Stars:
-              {{ repository().stargazers_count }}
-            </span>
+        <div class="left-group">
+          <span class="meta-item stars">
+            Stars:
+            {{ repository().stargazers_count }}
+          </span>
 
-        <span class="meta-item issues">
-             Issues:
-          {{ repository().open_issues_count || 0 }}
-            </span>
+          <span class="meta-item issues">
+            Issues:
+            {{ repository().open_issues_count || 0 }}
+          </span>
 
-        <span class="meta-item submitted">
-              Submitted {{ getDaysAgo(repository().created_at) }} days ago by
-              <a [href]="repository().owner.html_url" target="_blank" class="owner-link">
-                {{ repository().owner.login }}
-              </a>
-            </span>
+          <span class="meta-item submitted">
+            Submitted {{ getDaysAgo(repository().created_at) }} days ago by
+            <a
+              [href]="repository().owner.html_url"
+              class="owner-link"
+              target="_blank"
+            >
+              {{ repository().owner.login }}
+            </a>
+          </span>
+        </div>
+
+        @if (getCurrentRating() > 0) {
+          <div class="rating-display">
+            <app-star-rating [rating]="getCurrentRating()" [readonly]="true" />
+          </div>
+        }
       </div>
     </div>
   </div>

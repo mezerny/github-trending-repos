@@ -1,5 +1,6 @@
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
   computed,
   ElementRef,
@@ -7,28 +8,22 @@ import {
   OnDestroy,
   OnInit,
   signal,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
-import {GitHubRepoService} from '../../services/github-repo-service';
-import {GitHubRepository, SearchParams} from '../../types/github.types';
-import {CommonModule} from '@angular/common';
-import {TrendingRepo} from '../trending-repo/trending-repo';
+import { GitHubRepoService } from '../../services/github-repo-service';
+import { GitHubRepository, SearchParams } from '../../types/github.types';
+import { CommonModule } from '@angular/common';
+import { TrendingRepo } from '../trending-repo/trending-repo';
 
 @Component({
   selector: 'app-trending-repos-list',
-  imports: [
-    CommonModule,
-    TrendingRepo,
-  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [CommonModule, TrendingRepo],
   templateUrl: './trending-repos-list.html',
-  styleUrl: './trending-repos-list.less'
+  styleUrl: './trending-repos-list.less',
 })
 export class TrendingReposList implements OnInit, AfterViewInit, OnDestroy {
-  private readonly githubService = inject(GitHubRepoService);
-
   @ViewChild('scrollTrigger') scrollTrigger!: ElementRef<HTMLDivElement>;
-  private intersectionObserver?: IntersectionObserver;
-
   // Signals for state management
   readonly reposList = signal<GitHubRepository[]>([]);
   readonly initialLoading = signal(false);
@@ -37,15 +32,17 @@ export class TrendingReposList implements OnInit, AfterViewInit, OnDestroy {
   readonly currentPage = signal(1);
   readonly totalCount = signal(0);
   readonly hasReachedEnd = signal(false);
-
   // Computed for search parameters
   readonly searchParams = computed<SearchParams>(() => ({
     page: this.currentPage(),
-    perPage: 30
+    perPage: 30,
   }));
-
   // Computed to determine if we're currently loading anything
-  readonly isLoading = computed(() => this.initialLoading() || this.loadingMore());
+  readonly isLoading = computed(
+    () => this.initialLoading() || this.loadingMore(),
+  );
+  private readonly githubService = inject(GitHubRepoService);
+  private intersectionObserver?: IntersectionObserver;
 
   ngOnInit(): void {
     this.loadInitialRepositories();
@@ -71,7 +68,7 @@ export class TrendingReposList implements OnInit, AfterViewInit, OnDestroy {
     const options: IntersectionObserverInit = {
       root: null,
       rootMargin: '100px', // Trigger 100px before reaching the element
-      threshold: 0.1
+      threshold: 0.1,
     };
 
     this.intersectionObserver = new IntersectionObserver((entries) => {
@@ -85,10 +82,12 @@ export class TrendingReposList implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private canLoadMore(): boolean {
-    return !this.isLoading() &&
+    return (
+      !this.isLoading() &&
       !this.hasReachedEnd() &&
       !this.error() &&
-      this.reposList().length > 0;
+      this.reposList().length > 0
+    );
   }
 
   private loadInitialRepositories(): void {
@@ -106,7 +105,7 @@ export class TrendingReposList implements OnInit, AfterViewInit, OnDestroy {
         this.error.set('Failed to load repositories. Please try again.');
         this.initialLoading.set(false);
         console.error('Error loading initial repositories:', err);
-      }
+      },
     });
   }
 
@@ -114,12 +113,12 @@ export class TrendingReposList implements OnInit, AfterViewInit, OnDestroy {
     if (!this.canLoadMore()) return;
 
     this.loadingMore.set(true);
-    this.currentPage.update(page => page + 1);
+    this.currentPage.update((page) => page + 1);
 
     this.githubService.searchRepositories(this.searchParams()).subscribe({
       next: (result) => {
         // Append new repositories to existing ones
-        this.reposList.update(current => [...current, ...result.data]);
+        this.reposList.update((current) => [...current, ...result.data]);
         this.hasReachedEnd.set(!result.hasNext);
         this.loadingMore.set(false);
       },
@@ -127,10 +126,9 @@ export class TrendingReposList implements OnInit, AfterViewInit, OnDestroy {
         this.error.set('Failed to load more repositories. Please try again.');
         this.loadingMore.set(false);
         // Revert page increment on error
-        this.currentPage.update(page => Math.max(1, page - 1));
+        this.currentPage.update((page) => Math.max(1, page - 1));
         console.error('Error loading more repositories:', err);
-      }
+      },
     });
   }
-
 }

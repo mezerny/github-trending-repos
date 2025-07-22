@@ -2,3 +2,34 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+/* Global styles for modal dialogs - Add to your global styles.css */
+
+.repo-modal-container {
+  padding: 0;
+}
+
+.repo-modal-container .mat-mdc-dialog-container {
+  padding: 0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.repo-modal-container .mat-mdc-dialog-surface {
+  border-radius: 12px;
+}
+
+/* Override Material Dialog backdrop */
+.cdk-overlay-backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Ensure modal is responsive */
+@media (max-width: 768px) {
+  .repo-modal-container {
+    margin: 16px;
+  }
+
+  .repo-modal-container .mat-mdc-dialog-container {
+    max-height: calc(100vh - 32px);
+  }
+}

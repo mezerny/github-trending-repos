@@ -1,0 +1,16 @@
+<div class="star-rating">
+  @for (star of stars(); track star.index) {
+    <button
+      type="button"
+      class="star"
+      [class.filled]="star.filled"
+      [class.interactive]="!readonly()"
+      [disabled]="readonly()"
+      (click)="onStarClick(star.index)"
+      (mouseenter)="onStarHover(star.index)"
+      (mouseleave)="onMouseLeave()"
+    >
+      ★
+    </button>
+  }
+</div>

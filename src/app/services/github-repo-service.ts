@@ -1,15 +1,15 @@
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import {
   GitHubRepository,
   GitHubSearchResponse,
+  PaginatedResult,
   SearchParams,
-  PaginatedResult
 } from '../types/github.types';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GitHubRepoService {
   private readonly http = inject(HttpClient);
@@ -17,25 +17,39 @@ export class GitHubRepoService {
   private readonly defaultPerPage = 30;
   private readonly maxPerPage = 100;
 
-  searchRepositories(searchParams: SearchParams = {}): Observable<PaginatedResult<GitHubRepository>> {
+  searchRepositories(
+    searchParams: SearchParams = {},
+  ): Observable<PaginatedResult<GitHubRepository>> {
     const {
       startDate = this.getDefaultStartDate(),
       page = 1,
-      perPage = this.defaultPerPage
+      perPage = this.defaultPerPage,
     } = searchParams;
 
     // Validate parameters
     const validatedPage = Math.max(1, page);
     const validatedPerPage = Math.min(Math.max(1, perPage), this.maxPerPage);
 
-    const params = this.buildHttpParams(startDate, validatedPage, validatedPerPage);
-
-    return this.http.get<GitHubSearchResponse>(this.baseUrl, { params }).pipe(
-      map(response => this.mapToPaginatedResult(response, validatedPage, validatedPerPage))
+    const params = this.buildHttpParams(
+      startDate,
+      validatedPage,
+      validatedPerPage,
     );
+
+    return this.http
+      .get<GitHubSearchResponse>(this.baseUrl, { params })
+      .pipe(
+        map((response) =>
+          this.mapToPaginatedResult(response, validatedPage, validatedPerPage),
+        ),
+      );
   }
 
-  private buildHttpParams(startDate: string, page: number, perPage: number): HttpParams {
+  private buildHttpParams(
+    startDate: string,
+    page: number,
+    perPage: number,
+  ): HttpParams {
     return new HttpParams()
       .set('q', `created:>${startDate}`)
       .set('sort', 'stars')
@@ -47,7 +61,7 @@ export class GitHubRepoService {
   private mapToPaginatedResult(
     response: GitHubSearchResponse,
     currentPage: number,
-    perPage: number
+    perPage: number,
   ): PaginatedResult<GitHubRepository> {
     const totalPages = Math.ceil(response.total_count / perPage);
 
@@ -57,12 +71,17 @@ export class GitHubRepoService {
       currentPage,
       totalPages,
       hasNext: currentPage < totalPages,
-      hasPrevious: currentPage > 1
+      hasPrevious: currentPage > 1,
     };
   }
 
   private getDefaultStartDate(): string {
-    const thirtyDaysAgoISOString = new Date(new Date().setDate(new Date().getDate() - 30)).toISOString();
-    return thirtyDaysAgoISOString.substring(0, thirtyDaysAgoISOString.indexOf("T"));
+    const thirtyDaysAgoISOString = new Date(
+      new Date().setDate(new Date().getDate() - 30),
+    ).toISOString();
+    return thirtyDaysAgoISOString.substring(
+      0,
+      thirtyDaysAgoISOString.indexOf('T'),
+    );
   }
 }
