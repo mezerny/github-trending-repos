@@ -1,5 +1,5 @@
 # GithubTrendingRepos
-
+An Angular 20 application that displays trending GitHub repositories from the past 30 days, allowing user to rate and explore repositories.
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.1.1.
 
 ## Development server
@@ -11,20 +11,6 @@ ng serve
 ```
 
 Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
 
 ## Building
 
@@ -43,17 +29,18 @@ To execute unit tests with the [Karma](https://karma-runner.github.io) test runn
 ```bash
 ng test
 ```
+## File Naming Convention Note
 
-## Running end-to-end tests
+This project uses Angular 20's new naming convention (e.g., `trending-repo.ts` instead of `trending-repo.component.ts`). I decided to try this approach - didn't love it initially, but wanted to give it a proper evaluation.
 
-For end-to-end (e2e) testing, run:
+## Proposed improvements
 
-```bash
-ng e2e
-```
+### 1. Virtual scrolling for performance optimization
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+As users scroll through hundreds or thousands of repositories, the DOM becomes bloated with rendered elements leading to increased memory consumption, slower scroll performance and possible browser lag and reduced responsiveness.
+As a solution an implementation of the Angular CDK's virtual scrolling.
 
-## Additional Resources
+### 2. E2E testing implementation
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+To ensure critical user flows and prevent regression bugs it is recommended to implement a set of e2e test.
+As a possible solution, a CodeceptJS framework can be used.
