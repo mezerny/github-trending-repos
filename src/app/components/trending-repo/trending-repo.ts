@@ -19,7 +19,6 @@ import { TrendingRepoModal } from '../trending-repo-modal/trending-repo-modal';
   styleUrl: './trending-repo.less',
 })
 export class TrendingRepo {
-  // Input signal for the repository data
   readonly repository = input.required<GitHubRepository>();
   private readonly dialog = inject(Dialog);
   private readonly ratingService = inject(RatingService);

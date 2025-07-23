@@ -26,7 +26,6 @@ export class GitHubRepoService {
       perPage = this.defaultPerPage,
     } = searchParams;
 
-    // Validate parameters
     const validatedPage = Math.max(1, page);
     const validatedPerPage = Math.min(Math.max(1, perPage), this.maxPerPage);
 

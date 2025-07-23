@@ -25,7 +25,6 @@ export class StarRating {
   onStarClick(rating: number): void {
     if (this.readonly()) return;
 
-    // Allow clicking the same star to clear rating
     const newRating = this.rating() === rating ? 0 : rating;
     this.ratingChange.emit(newRating);
   }

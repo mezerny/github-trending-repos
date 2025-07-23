@@ -24,7 +24,6 @@ import { TrendingRepo } from '../trending-repo/trending-repo';
 })
 export class TrendingReposList implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('scrollTrigger') scrollTrigger!: ElementRef<HTMLDivElement>;
-  // Signals for state management
   readonly reposList = signal<GitHubRepository[]>([]);
   readonly initialLoading = signal(false);
   readonly loadingMore = signal(false);
@@ -32,12 +31,10 @@ export class TrendingReposList implements OnInit, AfterViewInit, OnDestroy {
   readonly currentPage = signal(1);
   readonly totalCount = signal(0);
   readonly hasReachedEnd = signal(false);
-  // Computed for search parameters
   readonly searchParams = computed<SearchParams>(() => ({
     page: this.currentPage(),
     perPage: 30,
   }));
-  // Computed to determine if we're currently loading anything
   readonly isLoading = computed(
     () => this.initialLoading() || this.loadingMore(),
   );
@@ -67,7 +64,7 @@ export class TrendingReposList implements OnInit, AfterViewInit, OnDestroy {
   private setupIntersectionObserver(): void {
     const options: IntersectionObserverInit = {
       root: null,
-      rootMargin: '100px', // Trigger 100px before reaching the element
+      rootMargin: '100px',
       threshold: 0.1,
     };
 
